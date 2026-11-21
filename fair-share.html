@@ -147,9 +147,16 @@ input::placeholder,textarea::placeholder{color:var(--ink-2);opacity:.8}
 .col{display:flex;flex-direction:column;gap:16px;min-width:0}
 @media (max-width:860px){.home-grid{grid-template-columns:minmax(0,1fr)}}
 .tonight{padding:20px;background:radial-gradient(120% 130% at 100% 0%,color-mix(in srgb,var(--today) 17%,var(--surface)) 0%,var(--surface) 60%)}
-.tdish{font-family:var(--font-display);font-weight:800;font-size:clamp(26px,4.6vw,36px);line-height:1.1;margin:8px 0 14px;text-wrap:balance;overflow-wrap:anywhere}
+.today-h{justify-content:space-between;margin-bottom:6px}
+.mblocks{display:grid;gap:16px}
+.mblocks.two{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.mblocks.two .mblock+.mblock{border-left:1px dashed var(--line);padding-left:16px}
+@media (max-width:560px){.mblocks.two{grid-template-columns:minmax(0,1fr)}.mblocks.two .mblock+.mblock{border-left:0;padding-left:0;border-top:1px dashed var(--line);padding-top:14px}}
+.mb-h{display:flex;align-items:center;gap:6px}
+.tdish{font-family:var(--font-display);font-weight:800;font-size:clamp(26px,4.6vw,36px);line-height:1.1;margin:6px 0 12px;text-wrap:balance;overflow-wrap:anywhere}
+.mblocks.two .tdish{font-size:clamp(22px,3.2vw,28px)}
 .tdish.empty{color:var(--ink-2);font-weight:600}
-.trow{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;margin-bottom:16px}
+.trow{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-bottom:12px}
 .who{display:inline-flex;align-items:center;gap:8px;font-size:15px}
 .who.minor{font-size:14px;color:var(--ink-2)}
 .who.minor b{color:var(--ink)}
@@ -174,7 +181,13 @@ input::placeholder,textarea::placeholder{color:var(--ink-2);opacity:.8}
 .verdict{margin-top:12px;font-size:14px}
 
 .nlist{list-style:none;margin:0;padding:0}
-.nlist li{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.nlist li{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;align-items:start;padding:8px 0;border-top:1px solid var(--line)}
+.nmeals{display:flex;flex-direction:column;gap:5px;min-width:0}
+.nm{display:flex;align-items:center;gap:8px;min-width:0}
+.nm .ndish{flex:1;min-width:0}
+.nicon{display:inline-grid;color:var(--ink-2);flex:none}
+.cook-opts{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 20px;margin-top:12px}
+.lunch-rule{min-width:180px}
 .nlist li:first-child{border-top:0}
 .nd{font-size:13px;color:var(--ink-2)}
 .nd b{color:var(--ink);font-variant-numeric:tabular-nums}
@@ -195,27 +208,39 @@ input::placeholder,textarea::placeholder{color:var(--ink-2);opacity:.8}
 /* meals */
 .mweeks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr));gap:14px;align-items:start}
 .mweek-h{display:flex;gap:10px;align-items:baseline;padding:11px 14px}
-.day{display:grid;grid-template-columns:44px minmax(0,1fr) auto 36px;grid-template-areas:"d dish cook dice";gap:2px 8px;align-items:center;padding:6px 8px 6px 14px;border-top:1px solid var(--line)}
+.day{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;align-items:start;padding:6px 8px 6px 14px;border-top:1px solid var(--line)}
 .day.today{background:color-mix(in srgb,var(--today) 13%,var(--surface))}
 .day.past .dlabel,.day.past .dish{opacity:.6}
-.dlabel{grid-area:d;display:flex;flex-direction:column;line-height:1.05}
+.dlabel{display:flex;flex-direction:column;line-height:1.05;padding-top:5px}
+.dmeals{display:flex;flex-direction:column;gap:2px;min-width:0}
+.mline{display:grid;grid-template-columns:minmax(0,1fr) auto 36px;gap:6px;align-items:center}
+.mline.labeled{grid-template-columns:20px minmax(0,1fr) auto 36px}
+.mlab{display:grid;place-items:center;color:var(--ink-2)}
 .dow{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);font-weight:700}
 .dnum{font-family:var(--font-display);font-weight:800;font-size:20px;font-variant-numeric:tabular-nums}
-.day .dish{grid-area:dish;width:100%;border:1px solid transparent;background:transparent;padding:8px 10px;border-radius:9px;font-weight:600}
+.day .dish{width:100%;border:1px solid transparent;background:transparent;padding:8px 10px;border-radius:9px;font-weight:600}
 .day .dish:hover:not(:disabled){border-color:var(--line)}
 .day .dish:focus{border-color:var(--ink-2);background:var(--surface);outline:none}
-.cookwrap{grid-area:cook;display:flex;align-items:center;gap:8px;min-width:0}
-.dice{grid-area:dice}
+.cookwrap{display:flex;align-items:center;gap:8px;min-width:0}
 .dishes-by{font-size:12px;color:var(--ink-2);white-space:nowrap}
-@media (max-width:520px){
-  .day{grid-template-columns:40px minmax(0,1fr) 36px;grid-template-areas:"d dish dice" "d cook cook";padding-left:12px}
-  .cookwrap{padding:0 0 6px 10px}
-}
 .cooksel{position:relative;display:inline-flex;align-items:center}
 .cooksel select{appearance:none;-webkit-appearance:none;border-radius:999px;padding:5px 28px 5px 12px;font-size:13px;font-weight:700;border:1px dashed var(--line);background:transparent;color:var(--ink-2);cursor:pointer;max-width:160px;text-overflow:ellipsis}
 .cooksel.set select{border:1px solid color-mix(in srgb,var(--pc,var(--ink-2)) 40%,transparent);background:color-mix(in srgb,var(--pc,var(--ink-2)) 14%,var(--surface));color:var(--ink)}
 .cooksel.both select{border:1px solid var(--line);background:linear-gradient(90deg,color-mix(in srgb,var(--ca) 18%,var(--surface)),color-mix(in srgb,var(--cb) 18%,var(--surface)))}
 .cooksel svg{position:absolute;right:9px;pointer-events:none;color:var(--ink-2)}
+@media (max-width:520px){
+  .day{grid-template-columns:34px minmax(0,1fr);gap:4px;padding:6px 4px 6px 12px}
+  .mline{grid-template-columns:minmax(0,1fr) auto 32px;gap:4px}
+  .mline.labeled{grid-template-columns:18px minmax(0,1fr) auto 32px}
+  .dishes-by{display:none}
+  .day .dish{padding:7px 6px}
+  .dice{width:32px;height:32px}
+  .cooksel select{max-width:100px;padding:4px 22px 4px 9px;font-size:12px}
+  .cooksel svg{right:6px}
+}
+.pmeal{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--ink-2)}
+.chip .mtag{width:auto;height:auto;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--surface);border:1px solid var(--line);color:var(--ink-2)}
+.chip .mtag:hover:not(:disabled){color:var(--ink);border-color:var(--ink-2);background:var(--surface)}
 
 .panel{margin-bottom:16px}
 .panel-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
@@ -359,8 +384,14 @@ const EFFORT_LABEL = { 1: "Quick job", 2: "Normal job", 3: "Big job" };
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const DEFAULT_CFG = {
   people: { a: { name: "", color: "teal", uid: null }, b: { name: "", color: "tomato", uid: null } },
-  split: 50, cookPattern: ["alt", "alt", "alt", "alt", "alt", "alt", "alt"], dishesRule: true,
+  split: 50, cookPattern: ["alt", "alt", "alt", "alt", "alt", "alt", "alt"], dishesRule: true, lunch: true, lunchCook: "alt",
 };
+/* One document per day holds both meals: dinner in dish/cook (the original fields), lunch in lunch/lunchCook. */
+const MEALS = { lunch: { dish: "lunch", cook: "lunchCook", label: "Lunch" }, dinner: { dish: "dish", cook: "cook", label: "Dinner" } };
+const lunchOn = cfg => !cfg || cfg.lunch !== false;
+const mealSlots = cfg => (lunchOn(cfg) ? ["lunch", "dinner"] : ["dinner"]);
+const ideaFits = (x, meal) => !x.meal || x.meal === meal;
+const blankMeal = id => ({ date: id, month: id.slice(0, 7), dish: "", cook: "", lunch: "", lunchCook: "" });
 function people(cfg) {
   const p = (cfg && cfg.people) || {};
   return {
@@ -450,32 +481,51 @@ function planChores({ mk, chores, monthTasks, history, cfg, today, mode }) {
   return res;
 }
 
-/* Cooks: pattern per weekday; "Take turns" days go to whoever has cooked less this month. */
+/*
+  Cooks: dinner follows the weekday pattern, lunch its own rule. "Take turns"
+  goes to whoever has cooked fewer meals this month; on a tie it goes to the
+  person who didn't cook that same meal the day before, so lunch and dinner
+  alternate instead of one person always getting dinner.
+*/
 function planCooks({ mk, meals, cfg, today }) {
   const pattern = Array.isArray(cfg && cfg.cookPattern) ? cfg.cookPattern : DEFAULT_CFG.cookPattern;
+  const slots = mealSlots(cfg);
   const cnt = { a: 0, b: 0 };
   const add = c => { if (c === "a" || c === "b") cnt[c]++; else if (c === "both") { cnt.a += 0.5; cnt.b += 0.5; } };
-  Object.values(meals).forEach(m => { if (m.month === mk && m.cook) add(m.cook); });
-  const out = []; let prev = null;
+  Object.values(meals).forEach(m => { if (m.month === mk) slots.forEach(s => add(m[MEALS[s].cook])); });
+  const out = {}; const prev = { lunch: null, dinner: null }; let count = 0;
   for (const d of daysOfMonth(mk)) {
-    const id = ymd(d); const m = meals[id];
-    if (m && m.cook) { prev = m.cook; continue; }
-    if (id < today) continue;
-    let who = pattern[dow(d)] || "alt";
-    if (who === "alt") who = cnt.a < cnt.b ? "a" : cnt.b < cnt.a ? "b" : (prev === "a" ? "b" : "a");
-    add(who); prev = who; out.push({ id, cook: who });
+    const id = ymd(d); const m = meals[id] || {};
+    for (const s of slots) {
+      const f = MEALS[s].cook;
+      if (m[f]) { prev[s] = m[f]; continue; }
+      if (id < today) continue;
+      let who = s === "dinner" ? pattern[dow(d)] || "alt" : (cfg && cfg.lunchCook) || "alt";
+      if (who === "alt") {
+        // Prefer not to give one person both meals of a day, unless that would put them more than a meal behind.
+        const today2 = slots.filter(o => o !== s).map(o => (out[id] && out[id][MEALS[o].cook]) || m[MEALS[o].cook]);
+        const cost = p => cnt[p] + (today2.includes(p) ? 1.25 : 0);
+        const ca = cost("a"), cb = cost("b");
+        who = ca < cb ? "a" : cb < ca ? "b" : prev[s] === "a" ? "b" : "a";
+      }
+      add(who); prev[s] = who; (out[id] = out[id] || {})[f] = who; count++;
+    }
   }
-  return out;
+  return { rows: Object.entries(out).map(([id, patch]) => ({ id, patch })), count };
 }
 
-function suggestDish(dishes, meals, id, exclude) {
-  if (!dishes.length) return null;
+function suggestDish(dishes, meals, id, meal, exclude) {
+  const fit = dishes.filter(x => ideaFits(x, meal));
+  if (!fit.length) return null;
   const d = parseYmd(id); const recent = new Set();
-  for (let k = -6; k <= 6; k++) { const m = meals[ymd(addDays(d, k))]; if (m && m.dish) recent.add(keyOf(m.dish)); }
+  for (let k = -6; k <= 6; k++) {
+    const m = meals[ymd(addDays(d, k))];
+    if (m) { if (m.dish) recent.add(keyOf(m.dish)); if (m.lunch) recent.add(keyOf(m.lunch)); }
+  }
   if (exclude) recent.add(keyOf(exclude));
-  let pool = dishes.filter(x => !recent.has(keyOf(x.name)));
-  if (!pool.length) pool = dishes.filter(x => keyOf(x.name) !== keyOf(exclude));
-  if (!pool.length) pool = dishes;
+  let pool = fit.filter(x => !recent.has(keyOf(x.name)));
+  if (!pool.length) pool = fit.filter(x => keyOf(x.name) !== keyOf(exclude));
+  if (!pool.length) pool = fit;
   return pool[Math.floor(Math.random() * pool.length)].name;
 }
 
@@ -486,8 +536,16 @@ const SEP = "[\\s:,\\-–—]";
 function cleanLine(s) {
   return (s || "").replace(/\*\*|__|`/g, "").replace(/^\s*(?:[-*•·–—>]+|\d{1,2}[.)](?!\d)|#+)\s*/, "").trim();
 }
-function splitLines(t) {
-  return (t || "").split(/\r?\n|;/).map(cleanLine).map(s => s.replace(/^(dinner|supper|lunch)\s*[:\-–—]\s*/i, "").trim()).filter(Boolean);
+function parseIdeas(t) {
+  const out = [];
+  for (const raw of (t || "").split(/\r?\n|;/)) {
+    let s = cleanLine(raw); if (!s) continue;
+    let meal = null;
+    const m = s.match(/^(lunch|dinner|supper)\s*[:\-–—]\s*/i);
+    if (m) { meal = m[1].toLowerCase() === "lunch" ? "lunch" : "dinner"; s = s.slice(m[0].length).trim(); }
+    if (s) out.push({ name: s, meal });
+  }
+  return out;
 }
 function matchPerson(token, pp) {
   const t = keyOf(token).replace(/^(always|by|cook|cooks|chef)\s*:?\s+/, "");
@@ -503,16 +561,17 @@ function matchCook(token, pp) {
   return null;
 }
 function makeDate(y, mo, d) { const x = new Date(y, mo, d); return x.getMonth() === mo && x.getDate() === d ? x : null; }
-function parseMenu(text, { start, pp, meals, onlyEmpty }) {
+function parseMenu(text, { start, pp, meals, onlyEmpty, lunch }) {
   const out = []; const used = new Set();
-  const startD = parseYmd(start); let cursor = startD; let pending = null;
+  const startD = parseYmd(start); let base = startD; let header = null;
+  const cur = { lunch: startD, dinner: startD };
   const guessYear = (mo, d) => { let x = makeDate(startD.getFullYear(), mo, d); if (x && x < addDays(startD, -60)) x = makeDate(startD.getFullYear() + 1, mo, d); return x; };
-  const free = id => !used.has(id) && (!onlyEmpty || !(meals[id] && meals[id].dish));
-  const nextFree = from => { let d = from; for (let i = 0; i < 366; i++) { if (free(ymd(d))) return d; d = addDays(d, 1); } return from; };
+  const free = (id, meal) => !used.has(id + meal) && (!onlyEmpty || !(meals[id] && meals[id][MEALS[meal].dish]));
+  const nextFree = (from, meal) => { let d = from; for (let i = 0; i < 366; i++) { if (free(ymd(d), meal)) return d; d = addDays(d, 1); } return from; };
   const onOrAfter = (from, wd) => { let d = from; for (let i = 0; i < 7; i++) { if (dow(d) === wd) return d; d = addDays(d, 1); } return from; };
   for (const raw of (text || "").split(/\r?\n/)) {
     let s = cleanLine(raw); if (!s) continue;
-    if (/^(breakfast|brunch|lunch|snacks?|dessert)\b/i.test(s)) continue;
+    if (/^(breakfast|brunch|snacks?|dessert)\b/i.test(s)) continue;
     if (/^week\s*\d+\s*:?$/i.test(s)) continue;
     s = s.replace(/^day\s*\d+\s*[:\-–—.)]?\s*/i, "");
     let date = null, wd = null, m;
@@ -525,22 +584,27 @@ function parseMenu(text, { start, pp, meals, onlyEmpty }) {
     } else if ((m = s.match(new RegExp("^(\\d{1,2})(?:st|nd|rd|th)?\\s+([A-Za-z]{3,9})\\.?(?=" + SEP + "|$)" + SEP + "*"))) && MONTHS[m[2].slice(0, 3).toLowerCase()] !== undefined) {
       const x = guessYear(MONTHS[m[2].slice(0, 3).toLowerCase()], +m[1]); if (x) { date = x; s = s.slice(m[0].length); }
     }
-    s = s.replace(/^(dinner|supper|main|evening)\s*[:\-–—]\s*/i, "").trim();
+    let meal = null;
+    const ml = s.match(/^(?:(lunch|dinner|supper)\b\s*[:\-–—]?|(?:evening|main)\s*[:\-–—])\s*/i);
+    if (ml) { meal = ml[1] && ml[1].toLowerCase() === "lunch" ? "lunch" : "dinner"; s = s.slice(ml[0].length).trim(); }
     let cook = "";
     for (const re of [/\s*\(([^()]+)\)\s*$/, /\s+[-–—|]\s*([^-–—|]+)$/, /\s*,\s*([^,]+)$/]) {
       const cm = s.match(re);
       if (cm) { const w = matchCook(cm[1], pp); if (w) { cook = w; s = s.slice(0, cm.index).trim(); break; } }
     }
     s = s.replace(/[.;,]+$/, "").trim();
-    if (!s) { pending = date || (wd !== null ? onOrAfter(cursor, wd) : pending); continue; }
+    // A line with only a day ("Monday", "28.11") is a heading for the lines under it.
+    if (!s) { if (date || wd !== null) { header = date || onOrAfter(base, wd); base = header; } continue; }
     if (/:$/.test(s)) continue;
-    if (!date && wd !== null) date = onOrAfter(cursor, wd);
-    if (!date && pending) date = pending;
-    pending = null;
-    if (!date) date = nextFree(cursor);
-    const id = ymd(date); used.add(id);
-    if (date >= cursor) cursor = addDays(date, 1);
-    out.push({ id, date, dish: s, cook });
+    meal = meal || "dinner";
+    if (meal === "lunch" && !lunch) continue;
+    let d = date || (wd !== null ? onOrAfter(base, wd) : null);
+    if (d) header = d;
+    else if (header && !used.has(ymd(header) + meal)) d = header;
+    if (!d) { header = null; d = nextFree(cur[meal], meal); }
+    const id = ymd(d); used.add(id + meal); base = d;
+    if (d >= cur[meal]) cur[meal] = addDays(d, 1);
+    out.push({ id, date: d, meal, dish: s, cook });
   }
   return out;
 }
@@ -584,7 +648,10 @@ const I = {
   bulb: ({ size }) => svg(html`<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"></path>`, size),
   scale: ({ size }) => svg(html`<path d="M12 4v16M7 20h10M5 7h14M5 7l-2.5 6a3 3 0 0 0 5 0zM19 7l-2.5 6a3 3 0 0 0 5 0z"></path>`, size),
   pot: ({ size }) => svg(html`<path d="M3 10h18M5 10v7a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-7M9 6c0-1 1-1.5 1-2.5M13 6c0-1 1-1.5 1-2.5"></path>`, size),
+  sun: ({ size }) => svg(html`<circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path>`, size),
+  moon: ({ size }) => svg(html`<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path>`, size),
 };
+const MealIcon = ({ meal, size = 15 }) => (meal === "lunch" ? html`<${I.sun} size=${size}/>` : html`<${I.moon} size=${size}/>`);
 
 /* ---------- shared bits ---------- */
 const Avatar = ({ p, size = 26 }) => html`<span className="av" style=${{ "--pc": `var(--c-${p.color})`, width: size + "px", height: size + "px", fontSize: Math.round(size * 0.46) + "px" }} aria-hidden="true">${(p.name[0] || "?").toUpperCase()}</span>`;
@@ -684,11 +751,15 @@ function Scoreboard({ ctx, mk }) {
     if (t.done) { s[t.who].done++; const k = s[t.doneBy] ? t.doneBy : t.who; s[k].donePts += eff(t); }
   });
   Object.values(meals).forEach(m => {
-    if (m.month !== mk || !m.cook || m.date > today) return;
-    if (m.cook === "a" || m.cook === "b") s[m.cook].cooked += 1;
-    else if (m.cook === "both") { s.a.cooked += 0.5; s.b.cooked += 0.5; }
+    if (m.month !== mk || m.date > today) return;
+    mealSlots(cfg).forEach(sl => {
+      const c = m[MEALS[sl].cook];
+      if (c === "a" || c === "b") s[c].cooked += 1;
+      else if (c === "both") { s.a.cooked += 0.5; s.b.cooked += 0.5; }
+    });
   });
   const split = cfg && cfg.split != null ? cfg.split : 50;
+  const noun = lunchOn(cfg) ? "meal" : "dinner";
   const chT = s.a.donePts + s.b.donePts;
   let verdict = "Nothing ticked off yet this month.";
   if (chT) {
@@ -699,10 +770,10 @@ function Scoreboard({ ctx, mk }) {
     <div className="card-h"><h3>${monthName(mk, false)} scoreboard</h3></div>
     <div className="score-people">${["a", "b"].map(k => html`<div className="sp" key=${k}>
       <${Avatar} p=${pp[k]} size=${34}/>
-      <div><b>${pp[k].name}</b><span>${s[k].donePts} pts earned</span><span>${s[k].done}/${s[k].n} chores done</span><span>${half(s[k].cooked)} dinner${s[k].cooked === 1 ? "" : "s"} cooked</span></div>
+      <div><b>${pp[k].name}</b><span>${s[k].donePts} pts earned</span><span>${s[k].done}/${s[k].n} chores done</span><span>${half(s[k].cooked)} ${noun}${s[k].cooked === 1 ? "" : "s"} cooked</span></div>
     </div>`)}</div>
     <${Bar} label="Chore points done" a=${s.a.donePts} b=${s.b.donePts} target=${split} pp=${pp}/>
-    <${Bar} label="Dinners cooked" a=${s.a.cooked} b=${s.b.cooked} target=${50} pp=${pp}/>
+    <${Bar} label=${noun === "meal" ? "Meals cooked" : "Dinners cooked"} a=${s.a.cooked} b=${s.b.cooked} target=${50} pp=${pp}/>
     <p className="verdict">${verdict}</p>
   </section>`;
 }
@@ -747,7 +818,7 @@ function CookSelect({ id, value, pp, onChange, disabled, label }) {
   const style = k ? pStyle(pp, k) : value === "both" ? duoStyle(pp) : {};
   return html`<span className=${"cooksel" + (value ? " set" : "") + (value === "both" ? " both" : "")} style=${style}>
     <select id=${id} value=${value} disabled=${disabled} onChange=${e => onChange(e.target.value)} aria-label=${label}>
-      <option value="">Who cooks?</option>
+      <option value="">Cook?</option>
       <option value="a">${pp.a.name}</option>
       <option value="b">${pp.b.name}</option>
       <option value="both">Together</option>
@@ -756,39 +827,51 @@ function CookSelect({ id, value, pp, onChange, disabled, label }) {
   </span>`;
 }
 
-function DayRow({ d, ctx }) {
+function MealLine({ id, long, meal, ctx, labeled }) {
   const { meals, today, pp, ro, actions, dishes, cfg } = ctx;
-  const id = ymd(d); const m = meals[id];
-  const saved = (m && m.dish) || "";
+  const F = MEALS[meal]; const m = meals[id] || {};
+  const saved = m[F.dish] || "";
   const [val, setVal] = useState(saved);
   const ref = useRef(null);
   useEffect(() => { if (document.activeElement !== ref.current) setVal(saved); }, [saved]);
-  const commit = () => { const v = norm(val); if (v !== saved) actions.saveMeal(id, { dish: v }); if (v !== val) setVal(v); };
-  const cook = (m && m.cook) || "";
+  const commit = () => { const v = norm(val); if (v !== saved) actions.saveMeal(id, { [F.dish]: v }); if (v !== val) setVal(v); };
+  const cook = m[F.cook] || "";
   const dishesBy = cfg.dishesRule !== false && (cook === "a" || cook === "b") ? other(cook) : null;
-  const long = fmt(d, { weekday: "long", day: "numeric", month: "long" });
-  return html`<div className=${"day" + (id === today ? " today" : "") + (id < today ? " past" : "")}>
-    <div className="dlabel"><span className="dow">${fmt(d, { weekday: "short" })}</span><span className="dnum">${d.getDate()}</span></div>
-    <input ref=${ref} className="dish" id=${"dish-" + id} list="dish-ideas" value=${val} autoComplete="off"
-      placeholder=${id < today ? "" : "What's for dinner?"} disabled=${ro} aria-label=${"Dinner on " + long}
+  const canSuggest = dishes.some(x => ideaFits(x, meal));
+  const what = F.label.toLowerCase() + " on " + long;
+  return html`<div className=${"mline" + (labeled ? " labeled" : "")}>
+    ${labeled && html`<span className="mlab" title=${F.label}><${MealIcon} meal=${meal}/></span>`}
+    <input ref=${ref} className="dish" id=${F.dish + "-" + id} list="dish-ideas" value=${val} autoComplete="off"
+      placeholder=${id < today ? "" : labeled ? F.label : "What's for dinner?"} disabled=${ro} aria-label=${F.label + " on " + long}
       onChange=${e => setVal(e.target.value)} onBlur=${commit}
       onKeyDown=${e => { if (e.key === "Enter") e.currentTarget.blur(); else if (e.key === "Escape") { const el = e.currentTarget; setVal(saved); setTimeout(() => el.blur(), 0); } }}/>
     <div className="cookwrap">
-      <${CookSelect} id=${"cook-" + id} value=${cook} pp=${pp} disabled=${ro} label=${"Who cooks on " + long} onChange=${v => actions.saveMeal(id, { cook: v })}/>
+      <${CookSelect} id=${F.cook + "-" + id} value=${cook} pp=${pp} disabled=${ro} label=${"Who cooks " + what} onChange=${v => actions.saveMeal(id, { [F.cook]: v })}/>
       ${dishesBy && html`<span className="dishes-by">${pp[dishesBy].name} washes up</span>`}
     </div>
-    <button className="ibtn dice" title="Pick a random idea" aria-label=${"Pick a random idea for " + long} disabled=${ro || !dishes.length}
-      onClick=${() => { const s = suggestDish(dishes, meals, id, saved); if (s) { setVal(s); actions.saveMeal(id, { dish: s }); } }}><${I.dice}/></button>
+    <button className="ibtn dice" title=${canSuggest ? "Pick a random idea" : `No ${F.label.toLowerCase()} ideas yet`} aria-label=${"Pick a random idea for " + what} disabled=${ro || !canSuggest}
+      onClick=${() => { const s = suggestDish(dishes, meals, id, meal, saved); if (s) { setVal(s); actions.saveMeal(id, { [F.dish]: s }); } }}><${I.dice}/></button>
+  </div>`;
+}
+
+function DayRow({ d, ctx }) {
+  const { today, cfg } = ctx;
+  const id = ymd(d); const slots = mealSlots(cfg);
+  const long = fmt(d, { weekday: "long", day: "numeric", month: "long" });
+  return html`<div className=${"day" + (id === today ? " today" : "") + (id < today ? " past" : "")}>
+    <div className="dlabel"><span className="dow">${fmt(d, { weekday: "short" })}</span><span className="dnum">${d.getDate()}</span></div>
+    <div className="dmeals">${slots.map(s => html`<${MealLine} key=${s} id=${id} long=${long} meal=${s} ctx=${ctx} labeled=${slots.length > 1}/>`)}</div>
   </div>`;
 }
 
 function PastePanel({ ctx, onClose }) {
-  const { month, today, pp, meals, actions, busy } = ctx;
+  const { month, today, pp, meals, actions, busy, cfg } = ctx;
+  const lunch = lunchOn(cfg);
   const [text, setText] = useState(() => lsGet("pasteDraft") || "");
   const [start, setStart] = useState(() => (month === today.slice(0, 7) ? today : `${month}-01`));
   const [onlyEmpty, setOnlyEmpty] = useState(true);
   const [saveIdeas, setSaveIdeas] = useState(true);
-  const rows = useMemo(() => (text.trim() ? parseMenu(text, { start, pp, meals, onlyEmpty }) : []), [text, start, onlyEmpty, meals, pp]);
+  const rows = useMemo(() => (text.trim() ? parseMenu(text, { start, pp, meals, onlyEmpty, lunch }) : []), [text, start, onlyEmpty, meals, pp, lunch]);
   useEffect(() => { lsSet("pasteDraft", text); }, [text]);
   const apply = async () => { if (await actions.applyMenu(rows, saveIdeas)) { setText(""); onClose(); } };
   return html`<section className="card panel" aria-label="Paste a menu">
@@ -796,25 +879,26 @@ function PastePanel({ ctx, onClose }) {
       <div className="pcol">
         <label className="lab" htmlFor="paste-menu">Paste your menu</label>
         <textarea id="paste-menu" rows="8" value=${text} onChange=${e => setText(e.target.value)}
-          placeholder=${`One dinner per line, for example:\nPierogi\nChicken curry (${pp.a.name})\nTue: Tomato soup\n28.11 Pizza night - together`}></textarea>
+          placeholder=${`One meal per line, for example:\nPierogi\n${lunch ? "Lunch: Tomato soup\n" : ""}Tue: Chicken curry (${pp.a.name})\n28.11 Pizza night - together`}></textarea>
         <div className="row">
           <label className="lab-inline" htmlFor="paste-start">Start from</label>
           <input type="date" id="paste-start" value=${start} onChange=${e => e.target.value && setStart(e.target.value)}/>
         </div>
         <label className="chk"><input type="checkbox" id="paste-empty" checked=${onlyEmpty} onChange=${e => setOnlyEmpty(e.target.checked)}/>Skip days that already have a dinner</label>
-        <label className="chk"><input type="checkbox" id="paste-ideas" checked=${saveIdeas} onChange=${e => setSaveIdeas(e.target.checked)}/>Also save them as dinner ideas</label>
-        <p className="hint">Lines without a date go on the next free days. Start a line with a weekday (Tue) or a date (28.11) to pin it to that day. Put a name in brackets or after a dash to set who cooks. Breakfast and lunch lines are skipped.</p>
+        <label className="chk"><input type="checkbox" id="paste-ideas" checked=${saveIdeas} onChange=${e => setSaveIdeas(e.target.checked)}/>Also save them as meal ideas</label>
+        <p className="hint">Lines without a date go on the next free days. Start a line with a weekday (Tue) or a date (28.11) to pin it to that day. ${lunch ? "Start a line with “Lunch:” for lunch; everything else counts as dinner. " : ""}Put a name in brackets or after a dash to set who cooks. Breakfast lines are skipped${lunch ? "" : ", and so is lunch while it’s turned off in Setup"}.</p>
       </div>
       <div className="pcol">
-        <div className="lab">Preview${rows.length ? ` · ${rows.length} dinner${rows.length === 1 ? "" : "s"}` : ""}</div>
+        <div className="lab">Preview${rows.length ? ` · ${rows.length} meal${rows.length === 1 ? "" : "s"}` : ""}</div>
         ${rows.length
-          ? html`<ul className="preview">${rows.map((r, i) => html`<li key=${i}>
+          ? html`<ul className="preview">${rows.map((r, i) => { const old = meals[r.id] && meals[r.id][MEALS[r.meal].dish]; return html`<li key=${i}>
               <span className="pd">${fmt(r.date, { weekday: "short", day: "numeric", month: "short" })}</span>
+              ${lunch && html`<span className="pmeal" title=${MEALS[r.meal].label}><${MealIcon} meal=${r.meal} size=${14}/>${MEALS[r.meal].label}</span>`}
               <span className="pdish">${r.dish}</span>
               <${CookChip} pp=${pp} cook=${r.cook}/>
-              ${meals[r.id] && meals[r.id].dish && keyOf(meals[r.id].dish) !== keyOf(r.dish) && html`<span className="replace">Replaces ${meals[r.id].dish}</span>`}
-            </li>`)}</ul>`
-          : html`<p className="muted small">Paste something on the left to see which day each dinner lands on.</p>`}
+              ${old && keyOf(old) !== keyOf(r.dish) && html`<span className="replace">Replaces ${old}</span>`}
+            </li>`; })}</ul>`
+          : html`<p className="muted small">Paste something on the left to see which day each meal lands on.</p>`}
         <div className="row">
           <button className="btn primary" disabled=${!rows.length || !!busy} onClick=${apply}>Add ${rows.length ? rows.length + " " : ""}to the plan</button>
           <button className="btn ghost" onClick=${onClose}>Close</button>
@@ -824,24 +908,31 @@ function PastePanel({ ctx, onClose }) {
   </section>`;
 }
 
+const NEXT_TAG = { any: "lunch", lunch: "dinner", dinner: "any" };
 function IdeasPanel({ ctx }) {
-  const { dishes, actions, ro } = ctx;
+  const { dishes, actions, ro, cfg } = ctx;
   const [v, setV] = useState("");
+  const tags = lunchOn(cfg);
   const sorted = [...dishes].sort((a, b) => a.name.localeCompare(b.name));
-  const add = async () => { const names = splitLines(v); if (names.length && (await actions.addDishes(names))) setV(""); };
+  const add = async () => { const items = parseIdeas(v); if (items.length && (await actions.addDishes(items))) setV(""); };
   const onPaste = e => {
     const t = (e.clipboardData && e.clipboardData.getData("text")) || "";
-    if (/\n/.test(t.trim())) { e.preventDefault(); actions.addDishes(splitLines(t)); }
+    if (/\n/.test(t.trim())) { e.preventDefault(); actions.addDishes(parseIdeas(t)); }
   };
-  return html`<section className="card panel" aria-label="Dinner ideas">
-    <div className="card-h"><h3>Dinner ideas</h3><span className="muted small">${dishes.length} saved. They show up as suggestions while you type, and the dice picks from them.</span></div>
+  const tagBtn = d => {
+    const cur = d.meal === "lunch" || d.meal === "dinner" ? d.meal : "any";
+    return html`<button className="mtag" disabled=${ro} title="Change which meal this is suggested for" aria-label=${`${d.name}: suggested for ${cur === "any" ? "any meal" : cur}. Change`}
+      onClick=${() => { const n = NEXT_TAG[cur]; actions.setIdeaMeal(d.id, n === "any" ? null : n); }}>${cur === "any" ? "Any" : MEALS[cur].label}</button>`;
+  };
+  return html`<section className="card panel" aria-label="Meal ideas">
+    <div className="card-h"><h3>Meal ideas</h3><span className="muted small">${dishes.length} saved. They show up as suggestions while you type, and the dice picks from them.${tags ? " Tap a tag to choose lunch, dinner or any meal." : ""}</span></div>
     <form className="row" onSubmit=${e => { e.preventDefault(); add(); }}>
       <input id="idea-new" className="grow" value=${v} onChange=${e => setV(e.target.value)} onPaste=${onPaste} placeholder="Add an idea, or paste a whole list" disabled=${ro} autoComplete="off"/>
       <button className="btn primary" disabled=${ro || !v.trim()}>Add</button>
     </form>
     ${sorted.length
-      ? html`<ul className="chips">${sorted.map(d => html`<li key=${d.id} className="chip"><span>${d.name}</span>${!ro && html`<button aria-label=${"Remove " + d.name} title="Remove" onClick=${() => actions.deleteDish(d.id)}><${I.x} size=${13}/></button>`}</li>`)}</ul>`
-      : html`<p className="hint">No ideas yet. Add the dinners you make often. You can paste a list with one per line.</p>`}
+      ? html`<ul className="chips">${sorted.map(d => html`<li key=${d.id} className="chip"><span>${d.name}</span>${tags && tagBtn(d)}${!ro && html`<button className="rm" aria-label=${"Remove " + d.name} title="Remove" onClick=${() => actions.deleteDish(d.id)}><${I.x} size=${13}/></button>`}</li>`)}</ul>`
+      : html`<p className="hint">No ideas yet. Add the meals you make often. You can paste a list with one per line${tags ? ", and start a line with “Lunch:” to mark it as a lunch idea" : ""}.</p>`}
   </section>`;
 }
 
@@ -866,7 +957,7 @@ function MealsTab({ ctx }) {
       <button className=${"btn" + (panel === "paste" ? " on" : "")} onClick=${() => toggle("paste")} disabled=${ro} aria-expanded=${panel === "paste"}><${I.paste}/> Paste a menu</button>
       <button className=${"btn" + (panel === "ideas" ? " on" : "")} onClick=${() => toggle("ideas")} aria-expanded=${panel === "ideas"}><${I.bulb}/> Ideas · ${dishes.length}</button>
       ${open && html`<button className="btn" onClick=${() => actions.fillCooks(month)} disabled=${ro || !!busy}><${I.pot}/> Assign cooks</button>`}
-      ${open && html`<button className="btn" onClick=${() => actions.fillDishes(month)} disabled=${ro || !!busy || !dishes.length} title=${dishes.length ? "Fill empty days with random ideas" : "Add some dinner ideas first"}><${I.dice}/> Fill empty days</button>`}
+      ${open && html`<button className="btn" onClick=${() => actions.fillDishes(month)} disabled=${ro || !!busy || !dishes.length} title=${dishes.length ? "Fill empty meals with random ideas" : "Add some meal ideas first"}><${I.dice}/> Fill empty days</button>`}
     <//>
     ${panel === "paste" && html`<${PastePanel} ctx=${ctx} onClose=${() => setPanel(null)}/>`}
     ${panel === "ideas" && html`<${IdeasPanel} ctx=${ctx}/>`}
@@ -880,49 +971,65 @@ function MealsTab({ ctx }) {
 }
 
 /* ---------- home ---------- */
-function Tonight({ ctx }) {
-  const { pp, meals, today, dishes, ro, actions, cfg, setTab, setMonth, showToast } = ctx;
-  const m = meals[today]; const cook = (m && m.cook) || ""; const dish = (m && m.dish) || "";
+function MealBlock({ ctx, meal }) {
+  const { pp, meals, today, dishes, ro, actions, cfg, showToast } = ctx;
+  const F = MEALS[meal]; const m = meals[today] || {};
+  const dish = m[F.dish] || ""; const cook = m[F.cook] || "";
   const [flip, setFlip] = useState(false);
   const onFlip = async () => {
     setFlip(true);
     const who = Math.random() < 0.5 ? "a" : "b";
     await sleep(reducedMotion() ? 0 : 1100);
     setFlip(false);
-    if (await actions.saveMeal(today, { cook: who })) showToast(`The coin says ${pp[who].name} cooks tonight.`);
+    if (await actions.saveMeal(today, { [F.cook]: who })) showToast(`The coin says ${pp[who].name} ${meal === "lunch" ? "makes lunch" : "cooks dinner"}.`);
   };
-  const onSurprise = () => { const d = suggestDish(dishes, meals, today, dish); if (d) actions.saveMeal(today, { dish: d }); };
+  const canSuggest = dishes.some(x => ideaFits(x, meal));
+  const onSurprise = () => { const d = suggestDish(dishes, meals, today, meal, dish); if (d) actions.saveMeal(today, { [F.dish]: d }); };
   const dishesBy = cfg.dishesRule !== false && (cook === "a" || cook === "b") ? other(cook) : null;
-  return html`<section className="card tonight">
-    <div className="eyebrow">Tonight · ${fmt(parseYmd(today), { weekday: "long", day: "numeric", month: "long" })}</div>
-    <div className=${"tdish" + (dish ? "" : " empty")}>${dish || "No dinner planned yet"}</div>
+  return html`<div className="mblock">
+    <div className="eyebrow mb-h"><${MealIcon} meal=${meal}/> ${F.label}</div>
+    <div className=${"tdish" + (dish ? "" : " empty")}>${dish || `No ${F.label.toLowerCase()} planned`}</div>
     <div className="trow">
       ${cook === "a" || cook === "b"
-        ? html`<span className="who"><${Avatar} p=${pp[cook]} size=${30}/><span><b>${pp[cook].name}</b> cooks</span></span>`
+        ? html`<span className="who"><${Avatar} p=${pp[cook]} size=${28}/><span><b>${pp[cook].name}</b> cooks</span></span>`
         : cook === "both"
-        ? html`<span className="who"><span className="duo"><${Avatar} p=${pp.a} size=${30}/><${Avatar} p=${pp.b} size=${30}/></span><b>Cooking together</b></span>`
+        ? html`<span className="who"><span className="duo"><${Avatar} p=${pp.a} size=${28}/><${Avatar} p=${pp.b} size=${28}/></span><b>Together</b></span>`
         : cook === "out"
-        ? html`<span className="who"><b>No cooking tonight</b></span>`
+        ? html`<span className="who"><b>No cooking</b></span>`
         : html`<span className="who muted">Nobody is cooking yet</span>`}
-      ${dishesBy && html`<span className="who minor"><${Avatar} p=${pp[dishesBy]} size=${22}/><span><b>${pp[dishesBy].name}</b> does the dishes</span></span>`}
+      ${dishesBy && html`<span className="who minor"><${Avatar} p=${pp[dishesBy]} size=${20}/><span><b>${pp[dishesBy].name}</b> washes up</span></span>`}
     </div>
     <div className="tactions">
-      ${!cook && html`<button className="btn" onClick=${onFlip} disabled=${ro || flip}><span className=${"coin" + (flip ? " flipping" : "")} style=${duoStyle(pp)}></span>${flip ? "Flipping…" : "Flip a coin for who cooks"}</button>`}
-      <button className="btn" onClick=${onSurprise} disabled=${ro || !dishes.length} title=${dishes.length ? "" : "Add dinner ideas on the Meals tab first"}><${I.dice}/> ${dish ? "Pick something else" : "Surprise me"}</button>
-      <button className="btn ghost" onClick=${() => { setMonth(today.slice(0, 7)); setTab("meals"); }}>Open meal plan</button>
+      ${!cook && html`<button className="btn sm" onClick=${onFlip} disabled=${ro || flip}><span className=${"coin" + (flip ? " flipping" : "")} style=${duoStyle(pp)}></span>${flip ? "Flipping…" : "Flip a coin"}</button>`}
+      <button className="btn sm" onClick=${onSurprise} disabled=${ro || !canSuggest} title=${canSuggest ? "" : "Add meal ideas on the Meals tab first"}><${I.dice} size=${16}/> ${dish ? "Something else" : "Surprise me"}</button>
     </div>
+  </div>`;
+}
+
+function Today({ ctx }) {
+  const { today, cfg, setTab, setMonth } = ctx; const slots = mealSlots(cfg);
+  return html`<section className="card tonight">
+    <div className="card-h today-h">
+      <span className="eyebrow">Today · ${fmt(parseYmd(today), { weekday: "long", day: "numeric", month: "long" })}</span>
+      <button className="link" onClick=${() => { setMonth(today.slice(0, 7)); setTab("meals"); }}>Open meal plan</button>
+    </div>
+    <div className=${"mblocks" + (slots.length > 1 ? " two" : "")}>${slots.map(s => html`<${MealBlock} key=${s} ctx=${ctx} meal=${s}/>`)}</div>
   </section>`;
 }
 
-function NextDinners({ ctx }) {
-  const { pp, meals, today, setTab, setMonth } = ctx; const t = parseYmd(today);
+function ComingUp({ ctx }) {
+  const { pp, meals, today, setTab, setMonth, cfg } = ctx; const t = parseYmd(today);
   const days = Array.from({ length: 6 }, (_, i) => addDays(t, i + 1));
+  const slots = mealSlots(cfg);
   return html`<section className="card">
-    <div className="card-h"><h3>Coming up</h3><button className="link" onClick=${() => { setMonth(today.slice(0, 7)); setTab("meals"); }}>Plan dinners</button></div>
-    <ul className="nlist">${days.map(d => { const id = ymd(d); const m = meals[id]; return html`<li key=${id}>
+    <div className="card-h"><h3>Coming up</h3><button className="link" onClick=${() => { setMonth(today.slice(0, 7)); setTab("meals"); }}>Plan meals</button></div>
+    <ul className="nlist">${days.map(d => { const id = ymd(d); const m = meals[id] || {}; return html`<li key=${id}>
       <span className="nd">${fmt(d, { weekday: "short" })} <b>${d.getDate()}</b></span>
-      <span className=${"ndish" + (m && m.dish ? "" : " muted")}>${(m && m.dish) || "Not planned"}</span>
-      <${CookChip} pp=${pp} cook=${m && m.cook}/>
+      <div className="nmeals">${slots.map(s => { const F = MEALS[s]; return html`<div className="nm" key=${s}>
+        ${slots.length > 1 && html`<span className="nicon" title=${F.label}><${MealIcon} meal=${s} size=${14}/></span>`}
+        <span className=${"ndish" + (m[F.dish] ? "" : " muted")}>${m[F.dish] || "Not planned"}</span>
+        <${CookChip} pp=${pp} cook=${m[F.cook]}/>
+      </div>`; })}</div>
     </li>`; })}</ul>
   </section>`;
 }
@@ -943,12 +1050,12 @@ function Home({ ctx }) {
     </div>
     <div className="home-grid">
       <div className="col">
-        <${Tonight} ctx=${ctx}/>
+        <${Today} ctx=${ctx}/>
         <${WeekBoard} ctx=${ctx} mon=${mon} list=${list} onPlan=${() => actions.planMonth(mk, "fill")} planLabel=${"Plan " + monthName(mk, false)}/>
       </div>
       <div className="col">
         <${Scoreboard} ctx=${ctx} mk=${today.slice(0, 7)}/>
-        <${NextDinners} ctx=${ctx}/>
+        <${ComingUp} ctx=${ctx}/>
       </div>
     </div>
   </div>`;
@@ -1037,9 +1144,18 @@ function CookingCard({ ctx }) {
   const { cfg, pp, actions, ro } = ctx;
   const pat = Array.isArray(cfg.cookPattern) ? cfg.cookPattern : DEFAULT_CFG.cookPattern;
   const setDay = (i, val) => { const next = [...pat]; next[i] = val; actions.saveConfig({ cookPattern: next }); };
+  const lunch = lunchOn(cfg);
   return html`<section className="card">
     <div className="card-h"><h3>Cooking</h3></div>
-    <p className="hint" style=${{ marginTop: 0 }}>“Assign cooks” on the Meals tab follows this. Days set to “Take turns” go to whoever has cooked less this month.</p>
+    <p className="hint" style=${{ marginTop: 0 }}>“Assign cooks” on the Meals tab follows these settings. “Take turns” goes to whoever has cooked fewer meals this month.</p>
+    <div className="cook-opts">
+      <label className="chk"><input type="checkbox" id="lunch-on" checked=${lunch} disabled=${ro} onChange=${e => actions.saveConfig({ lunch: e.target.checked })}/>Plan lunch as well as dinner</label>
+      ${lunch && html`<label className="pday lunch-rule" htmlFor="lunch-cook"><span className="lab">Lunch, every day</span>
+        <select id="lunch-cook" value=${cfg.lunchCook || "alt"} disabled=${ro} onChange=${e => actions.saveConfig({ lunchCook: e.target.value })}>
+          <option value="alt">Take turns</option><option value="a">${pp.a.name}</option><option value="b">${pp.b.name}</option><option value="both">Together</option><option value="out">No cooking</option>
+        </select></label>`}
+    </div>
+    ${lunch && html`<div className="lab" style=${{ marginTop: "14px" }}>Dinner, by weekday</div>`}
     <div className="pattern">${WEEKDAYS.map((w, i) => html`<label key=${w} className="pday" htmlFor=${"pat-" + i}><span className="lab">${w}</span>
       <select id=${"pat-" + i} value=${pat[i] || "alt"} disabled=${ro} onChange=${e => setDay(i, e.target.value)}>
         <option value="alt">Take turns</option><option value="a">${pp.a.name}</option><option value="b">${pp.b.name}</option><option value="both">Together</option><option value="out">No cooking</option>
@@ -1211,7 +1327,7 @@ function App() {
     };
     const mealOp = (fresh, id, patch) => (fresh[id]
       ? () => db.doc("meals/" + id).update(patch)
-      : () => db.doc("meals/" + id).set({ date: id, month: id.slice(0, 7), dish: "", cook: "", ...patch }));
+      : () => db.doc("meals/" + id).set({ ...blankMeal(id), ...patch }));
 
     A.createConfig = (a, b) => {
       const body = JSON.parse(JSON.stringify(DEFAULT_CFG));
@@ -1270,47 +1386,60 @@ function App() {
       const cur = S.current.meals[id];
       return guard(() => withRetry(cur
         ? () => db.doc("meals/" + id).update(patch)
-        : () => db.doc("meals/" + id).set({ date: id, month: id.slice(0, 7), dish: "", cook: "", ...patch })), !cur);
+        : () => db.doc("meals/" + id).set({ ...blankMeal(id), ...patch })), !cur);
     };
+    // Lunch and dinner of one day live in one document, so rows for the same day are merged into one write.
     A.applyMenu = async (rows, saveIdeas) => {
       const fresh = await freshMeals([...new Set(rows.map(r => r.id.slice(0, 7)))]);
       if (!fresh) return false;
-      const ops = rows.map(r => mealOp(fresh, r.id, r.cook ? { dish: r.dish, cook: r.cook } : { dish: r.dish }));
-      const ok = await batch("Adding dinners", ops, true);
+      const patches = {};
+      rows.forEach(r => { const F = MEALS[r.meal]; const p = (patches[r.id] = patches[r.id] || {}); p[F.dish] = r.dish; if (r.cook) p[F.cook] = r.cook; });
+      const ok = await batch("Adding meals", Object.entries(patches).map(([id, p]) => mealOp(fresh, id, p)), true);
       if (ok) {
-        if (saveIdeas) await A.addDishes(rows.map(r => r.dish), true);
-        showToast(`Added ${rows.length} dinner${rows.length === 1 ? "" : "s"} to the plan.`);
+        if (saveIdeas) await A.addDishes(rows.map(r => ({ name: r.dish, meal: r.meal })), true);
+        showToast(`Added ${rows.length} meal${rows.length === 1 ? "" : "s"} to the plan.`);
       }
       return ok;
     };
     A.fillCooks = async mk => {
       const fresh = await freshMeals([mk]); if (!fresh) return;
       const plan = planCooks({ mk, meals: fresh, cfg: S.current.cfg, today: S.current.today });
-      if (!plan.length) { showToast("Every day already has a cook."); return; }
-      if (await batch("Assigning cooks", plan.map(r => mealOp(fresh, r.id, { cook: r.cook })), true)) showToast(`Picked a cook for ${plan.length} day${plan.length === 1 ? "" : "s"}.`);
+      if (!plan.count) { showToast("Every meal already has a cook."); return; }
+      if (await batch("Assigning cooks", plan.rows.map(r => mealOp(fresh, r.id, r.patch)), true)) showToast(`Picked a cook for ${plan.count} meal${plan.count === 1 ? "" : "s"}.`);
     };
     A.fillDishes = async mk => {
-      const { dishes, today } = S.current;
-      if (!dishes.length) { showToast("Add a few dinner ideas first."); return; }
+      const { dishes, today, cfg } = S.current;
+      if (!dishes.length) { showToast("Add a few meal ideas first."); return; }
       const fresh = await freshMeals([mk]); if (!fresh) return;
-      const work = { ...fresh }; const rows = [];
+      const work = {}; Object.keys(fresh).forEach(k => { work[k] = { ...fresh[k] }; });
+      const patches = {}; let n = 0;
       for (const d of daysOfMonth(mk)) {
-        const id = ymd(d); if (id < today || (work[id] && work[id].dish)) continue;
-        const dish = suggestDish(dishes, work, id); if (!dish) continue;
-        rows.push({ id, dish }); work[id] = { ...(work[id] || {}), dish };
+        const id = ymd(d); if (id < today) continue;
+        for (const s of mealSlots(cfg)) {
+          const f = MEALS[s].dish; if (work[id] && work[id][f]) continue;
+          const dish = suggestDish(dishes, work, id, s); if (!dish) continue;
+          work[id] = { ...(work[id] || {}), [f]: dish }; (patches[id] = patches[id] || {})[f] = dish; n++;
+        }
       }
-      if (!rows.length) { showToast("No empty days left this month."); return; }
-      if (await batch("Filling dinners", rows.map(r => mealOp(fresh, r.id, { dish: r.dish })), true)) showToast(`Filled ${rows.length} empty day${rows.length === 1 ? "" : "s"} with ideas.`);
+      if (!n) { showToast("Nothing left to fill. Empty meals need ideas tagged for them."); return; }
+      if (await batch("Filling meals", Object.entries(patches).map(([id, p]) => mealOp(fresh, id, p)), true)) showToast(`Filled ${n} empty meal${n === 1 ? "" : "s"} with ideas.`);
     };
-    A.addDishes = async (names, quiet) => {
+    A.addDishes = async (items, quiet) => {
       const have = new Set(S.current.dishes.map(d => keyOf(d.name)));
-      const fresh = [];
-      for (const n of names) { const k = keyOf(n); if (!k || have.has(k)) continue; have.add(k); fresh.push(norm(n)); }
-      if (!fresh.length) { if (!quiet) showToast("That’s already in your ideas."); return true; }
-      const ok = await batch("Saving ideas", fresh.map(name => () => db.collection("dishes").doc("d" + rid()).set({ name, createdAt: Date.now() })), true);
-      if (ok && !quiet) showToast(fresh.length === 1 ? `Saved “${fresh[0]}”.` : `Saved ${fresh.length} ideas.`);
+      const fresh = new Map();
+      for (const it of items) {
+        const name = norm(typeof it === "string" ? it : it.name);
+        const meal = typeof it === "string" ? null : it.meal || null;
+        const k = keyOf(name); if (!k || have.has(k)) continue;
+        if (fresh.has(k)) { if (fresh.get(k).meal !== meal) fresh.get(k).meal = null; } else fresh.set(k, { name, meal });
+      }
+      const list = [...fresh.values()];
+      if (!list.length) { if (!quiet) showToast("That’s already in your ideas."); return true; }
+      const ok = await batch("Saving ideas", list.map(x => () => db.collection("dishes").doc("d" + rid()).set({ name: x.name, meal: x.meal, createdAt: Date.now() })), true);
+      if (ok && !quiet) showToast(list.length === 1 ? `Saved “${list[0].name}”.` : `Saved ${list.length} ideas.`);
       return ok;
     };
+    A.setIdeaMeal = (id, meal) => guard(() => withRetry(() => db.doc("dishes/" + id).update({ meal })));
     A.deleteDish = id => guard(() => withRetry(() => db.doc("dishes/" + id).delete()));
     return A;
   }, [db, guard, batch, showToast]);
