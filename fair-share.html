@@ -660,7 +660,7 @@ const Effort = ({ n }) => html`<span className="effort" title=${EFFORT_LABEL[n]}
 function CookChip({ pp, cook }) {
   if (cook === "a" || cook === "b") return html`<span className="cchip"><${Avatar} p=${pp[cook]} size=${20}/>${pp[cook].name}</span>`;
   if (cook === "both") return html`<span className="cchip"><span className="duo"><${Avatar} p=${pp.a} size=${20}/><${Avatar} p=${pp.b} size=${20}/></span>Together</span>`;
-  if (cook === "out") return html`<span className="cchip">No cooking</span>`;
+  if (cook === "out") return html`<span className="cchip">Eat out</span>`;
   return null;
 }
 
@@ -821,8 +821,8 @@ function CookSelect({ id, value, pp, onChange, disabled, label }) {
       <option value="">Cook?</option>
       <option value="a">${pp.a.name}</option>
       <option value="b">${pp.b.name}</option>
-      <option value="both">Together</option>
-      <option value="out">No cooking</option>
+      <option value="out">Eat out</option>
+      ${value === "both" && html`<option value="both">Together</option>`}
     </select><${I.chevD} size=${14}/>
   </span>`;
 }
@@ -879,14 +879,14 @@ function PastePanel({ ctx, onClose }) {
       <div className="pcol">
         <label className="lab" htmlFor="paste-menu">Paste your menu</label>
         <textarea id="paste-menu" rows="8" value=${text} onChange=${e => setText(e.target.value)}
-          placeholder=${`One meal per line, for example:\nPierogi\n${lunch ? "Lunch: Tomato soup\n" : ""}Tue: Chicken curry (${pp.a.name})\n28.11 Pizza night - together`}></textarea>
+          placeholder=${`One meal per line, for example:\nPierogi\n${lunch ? "Lunch: Tomato soup\n" : ""}Tue: Chicken curry (${pp.a.name})\n28.11 Pizza place - out`}></textarea>
         <div className="row">
           <label className="lab-inline" htmlFor="paste-start">Start from</label>
           <input type="date" id="paste-start" value=${start} onChange=${e => e.target.value && setStart(e.target.value)}/>
         </div>
         <label className="chk"><input type="checkbox" id="paste-empty" checked=${onlyEmpty} onChange=${e => setOnlyEmpty(e.target.checked)}/>Skip days that already have a dinner</label>
         <label className="chk"><input type="checkbox" id="paste-ideas" checked=${saveIdeas} onChange=${e => setSaveIdeas(e.target.checked)}/>Also save them as meal ideas</label>
-        <p className="hint">Lines without a date go on the next free days. Start a line with a weekday (Tue) or a date (28.11) to pin it to that day. ${lunch ? "Start a line with “Lunch:” for lunch; everything else counts as dinner. " : ""}Put a name in brackets or after a dash to set who cooks. Breakfast lines are skipped${lunch ? "" : ", and so is lunch while it’s turned off in Setup"}.</p>
+        <p className="hint">Lines without a date go on the next free days. Start a line with a weekday (Tue) or a date (28.11) to pin it to that day. ${lunch ? "Start a line with “Lunch:” for lunch; everything else counts as dinner. " : ""}Put a name in brackets or after a dash to set who cooks, or “out” if you’re eating out. Breakfast lines are skipped${lunch ? "" : ", and so is lunch while it’s turned off in Setup"}.</p>
       </div>
       <div className="pcol">
         <div className="lab">Preview${rows.length ? ` · ${rows.length} meal${rows.length === 1 ? "" : "s"}` : ""}</div>
@@ -995,7 +995,7 @@ function MealBlock({ ctx, meal }) {
         : cook === "both"
         ? html`<span className="who"><span className="duo"><${Avatar} p=${pp.a} size=${28}/><${Avatar} p=${pp.b} size=${28}/></span><b>Together</b></span>`
         : cook === "out"
-        ? html`<span className="who"><b>No cooking</b></span>`
+        ? html`<span className="who"><b>Eating out</b></span>`
         : html`<span className="who muted">Nobody is cooking yet</span>`}
       ${dishesBy && html`<span className="who minor"><${Avatar} p=${pp[dishesBy]} size=${20}/><span><b>${pp[dishesBy].name}</b> washes up</span></span>`}
     </div>
@@ -1152,13 +1152,13 @@ function CookingCard({ ctx }) {
       <label className="chk"><input type="checkbox" id="lunch-on" checked=${lunch} disabled=${ro} onChange=${e => actions.saveConfig({ lunch: e.target.checked })}/>Plan lunch as well as dinner</label>
       ${lunch && html`<label className="pday lunch-rule" htmlFor="lunch-cook"><span className="lab">Lunch, every day</span>
         <select id="lunch-cook" value=${cfg.lunchCook || "alt"} disabled=${ro} onChange=${e => actions.saveConfig({ lunchCook: e.target.value })}>
-          <option value="alt">Take turns</option><option value="a">${pp.a.name}</option><option value="b">${pp.b.name}</option><option value="both">Together</option><option value="out">No cooking</option>
+          <option value="alt">Take turns</option><option value="a">${pp.a.name}</option><option value="b">${pp.b.name}</option><option value="out">Eat out</option>
         </select></label>`}
     </div>
     ${lunch && html`<div className="lab" style=${{ marginTop: "14px" }}>Dinner, by weekday</div>`}
     <div className="pattern">${WEEKDAYS.map((w, i) => html`<label key=${w} className="pday" htmlFor=${"pat-" + i}><span className="lab">${w}</span>
       <select id=${"pat-" + i} value=${pat[i] || "alt"} disabled=${ro} onChange=${e => setDay(i, e.target.value)}>
-        <option value="alt">Take turns</option><option value="a">${pp.a.name}</option><option value="b">${pp.b.name}</option><option value="both">Together</option><option value="out">No cooking</option>
+        <option value="alt">Take turns</option><option value="a">${pp.a.name}</option><option value="b">${pp.b.name}</option><option value="out">Eat out</option>
       </select></label>`)}</div>
     <label className="chk"><input type="checkbox" id="dishes-rule" checked=${cfg.dishesRule !== false} disabled=${ro} onChange=${e => actions.saveConfig({ dishesRule: e.target.checked })}/>Whoever doesn’t cook does the dishes</label>
   </section>`;
