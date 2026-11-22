@@ -258,6 +258,36 @@ input::placeholder,textarea::placeholder{color:var(--ink-2);opacity:.8}
 .chip span{overflow-wrap:anywhere}
 .chip button{border:0;background:transparent;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2);cursor:pointer;flex:none;padding:0}
 .chip button:hover{background:var(--line);color:var(--ink)}
+.chip .iname{width:auto;height:auto;border-radius:6px;display:inline-flex;align-items:center;gap:5px;padding:0;color:var(--ink);font-weight:500;text-align:left;min-width:0}
+.chip .iname:hover{background:transparent;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.chip .iname svg{color:var(--ink-2);flex:none}
+.chip .rm.armed{width:auto;padding:0 8px;border-radius:999px;font-size:12px;font-weight:700;color:var(--warn)}
+
+/* recipes */
+.dishcell{position:relative;min-width:0}
+.day .dish.has-r{padding-right:36px}
+.rbtn{position:absolute;right:3px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:8px;background:transparent;color:var(--ink-2);display:grid;place-items:center;cursor:pointer;padding:0}
+.rbtn:hover{background:var(--surface-2);color:var(--ink)}
+.sheet{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);color:var(--ink);padding:0;width:min(640px,calc(100vw - 32px));max-width:none;max-height:min(88vh,920px);box-shadow:0 24px 64px rgba(0,0,0,.28)}
+.sheet[open]{display:flex;flex-direction:column}
+.sheet::backdrop{background:rgba(10,16,15,.5)}
+.sheet-h{display:flex;align-items:flex-start;gap:12px;padding:18px 14px 14px 20px;border-bottom:1px solid var(--line)}
+.sheet-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.sheet-h h2{font-size:22px;font-weight:800;line-height:1.15;overflow-wrap:anywhere}
+.sheet-b{padding:16px 20px;overflow:auto;flex:1;min-height:0}
+.sheet-f{display:flex;flex-wrap:wrap;gap:8px;padding:12px 20px 16px;border-top:1px solid var(--line)}
+.srclink{display:inline-flex;align-items:center;gap:6px;color:var(--focus);font-weight:600;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.recipe{line-height:1.55}
+.recipe h4{font-family:var(--font-body);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);margin:18px 0 6px}
+.recipe h4:first-child,.recipe p:first-child{margin-top:0}
+.recipe p{margin:8px 0}
+.recipe ul,.recipe ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+.recipe li{padding-left:2px}
+.recipe ol li::marker{font-weight:700;color:var(--ink-2)}
+.redit{display:flex;flex-direction:column;gap:12px}
+.redit textarea{min-height:260px;font-size:14px}
+.redit input{width:100%}
+@media (max-width:520px){.sheet{max-height:92vh}.sheet-h{padding:14px 10px 12px 16px}.sheet-b{padding:14px 16px}.sheet-f{padding:12px 16px 14px}}
 
 /* setup */
 .setup{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:16px;align-items:start}
@@ -452,6 +482,15 @@ const MEALS = { lunch: { dish: "lunch", cook: "lunchCook", label: "Lunch" }, din
 const lunchOn = cfg => !cfg || cfg.lunch !== false;
 const mealSlots = cfg => (lunchOn(cfg) ? ["lunch", "dinner"] : ["dinner"]);
 const ideaFits = (x, meal) => !x.meal || x.meal === meal;
+/* An idea can carry a recipe (plain text) and a link to where it came from. */
+const hasRecipe = x => !!(x && (x.recipe || x.url));
+/* "" for no link, null for something that isn't an http(s) link, otherwise the cleaned-up link. */
+function safeUrl(u) {
+  const s = norm(u); if (!s) return "";
+  try { const x = new URL(/^[a-z][a-z0-9+.-]*:\/\//i.test(s) ? s : "https://" + s); return x.protocol === "https:" || x.protocol === "http:" ? x.href : null; }
+  catch (e) { return null; }
+}
+const hostOf = u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch (e) { return "the web"; } };
 const blankMeal = id => ({ date: id, month: id.slice(0, 7), dish: "", cook: "", lunch: "", lunchCook: "" });
 function people(cfg) {
   const p = (cfg && cfg.people) || {};
@@ -830,6 +869,8 @@ const I = {
   wallet: ({ size }) => svg(html`<path d="M4 7.5A1.5 1.5 0 0 1 5.5 6H18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM4 8l11-4v2M16 13.5h2"></path>`, size),
   repeat: ({ size }) => svg(html`<path d="M4 11a7 7 0 0 1 12-4.5L18 9M20 13a7 7 0 0 1-12 4.5L6 15M18 4v5h-5M6 20v-5h5"></path>`, size),
   pencil: ({ size }) => svg(html`<path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4"></path>`, size),
+  book: ({ size }) => svg(html`<path d="M12 6.5C9.5 5 6.5 4.6 3.5 5.5V19c3-.9 6-.5 8.5 1 2.5-1.5 5.5-1.9 8.5-1V5.5C17.5 4.6 14.5 5 12 6.5zM12 6.5V20"></path>`, size),
+  ext: ({ size }) => svg(html`<path d="M14 4h6v6M20 4l-8.5 8.5M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"></path>`, size),
 };
 const CatIcon = ({ cat, size = 16 }) => { const C = I[(CAT[cat] || CAT.other).icon]; return html`<${C} size=${size}/>`; };
 const MealIcon = ({ meal, size = 15 }) => (meal === "lunch" ? html`<${I.sun} size=${size}/>` : html`<${I.moon} size=${size}/>`);
@@ -1009,7 +1050,7 @@ function CookSelect({ id, value, pp, onChange, disabled, label }) {
 }
 
 function MealLine({ id, long, meal, ctx, labeled }) {
-  const { meals, today, pp, ro, actions, dishes, cfg } = ctx;
+  const { meals, today, pp, ro, actions, dishes, cfg, ideaByKey, openRecipe } = ctx;
   const F = MEALS[meal]; const m = meals[id] || {};
   const saved = m[F.dish] || "";
   const [val, setVal] = useState(saved);
@@ -1020,12 +1061,17 @@ function MealLine({ id, long, meal, ctx, labeled }) {
   const dishesBy = cfg.dishesRule !== false && (cook === "a" || cook === "b") ? other(cook) : null;
   const canSuggest = dishes.some(x => ideaFits(x, meal));
   const what = F.label.toLowerCase() + " on " + long;
+  const idea = saved ? ideaByKey[keyOf(saved)] : null;
+  const rec = hasRecipe(idea) && keyOf(val) === keyOf(saved);
   return html`<div className=${"mline" + (labeled ? " labeled" : "")}>
     ${labeled && html`<span className="mlab" title=${F.label}><${MealIcon} meal=${meal}/></span>`}
-    <input ref=${ref} className="dish" id=${F.dish + "-" + id} list="dish-ideas" value=${val} autoComplete="off"
-      placeholder=${id < today ? "" : labeled ? F.label : "What's for dinner?"} disabled=${ro} aria-label=${F.label + " on " + long}
-      onChange=${e => setVal(e.target.value)} onBlur=${commit}
-      onKeyDown=${e => { if (e.key === "Enter") e.currentTarget.blur(); else if (e.key === "Escape") { const el = e.currentTarget; setVal(saved); setTimeout(() => el.blur(), 0); } }}/>
+    <div className="dishcell">
+      <input ref=${ref} className=${"dish" + (rec ? " has-r" : "")} id=${F.dish + "-" + id} list="dish-ideas" value=${val} autoComplete="off"
+        placeholder=${id < today ? "" : labeled ? F.label : "What's for dinner?"} disabled=${ro} aria-label=${F.label + " on " + long}
+        onChange=${e => setVal(e.target.value)} onBlur=${commit}
+        onKeyDown=${e => { if (e.key === "Enter") e.currentTarget.blur(); else if (e.key === "Escape") { const el = e.currentTarget; setVal(saved); setTimeout(() => el.blur(), 0); } }}/>
+      ${rec && html`<button className="rbtn" onClick=${() => openRecipe(idea.id)} aria-label=${"Recipe for " + saved} title="Recipe"><${I.book} size=${16}/></button>`}
+    </div>
     <div className="cookwrap">
       <${CookSelect} id=${F.cook + "-" + id} value=${cook} pp=${pp} disabled=${ro} label=${"Who cooks " + what} onChange=${v => actions.saveMeal(id, { [F.cook]: v })}/>
       ${dishesBy && html`<span className="dishes-by">${pp[dishesBy].name} washes up</span>`}
@@ -1090,31 +1136,133 @@ function PastePanel({ ctx, onClose }) {
 }
 
 const NEXT_TAG = { any: "lunch", lunch: "dinner", dinner: "any" };
+function IdeaChip({ d, ctx, tags }) {
+  const { actions, ro, openRecipe } = ctx;
+  const [arm, setArm] = useState(false);
+  useEffect(() => { if (!arm) return; const t = setTimeout(() => setArm(false), 3000); return () => clearTimeout(t); }, [arm]);
+  const r = hasRecipe(d);
+  const cur = d.meal === "lunch" || d.meal === "dinner" ? d.meal : "any";
+  // An idea with a recipe asks before it goes, because the recipe goes with it.
+  const remove = () => (r && !arm ? setArm(true) : actions.deleteDish(d.id));
+  return html`<li className="chip">
+    <button className="iname" onClick=${() => openRecipe(d.id, !r)} title=${r ? "Open the recipe" : ro ? "No recipe yet" : "Add a recipe"}
+      aria-label=${d.name + (r ? ": open the recipe" : ro ? "" : ": add a recipe")}>${r && html`<${I.book} size=${14}/>`}<span>${d.name}</span></button>
+    ${tags && html`<button className="mtag" disabled=${ro} title="Change which meal this is suggested for" aria-label=${`${d.name}: suggested for ${cur === "any" ? "any meal" : cur}. Change`}
+      onClick=${() => { const n = NEXT_TAG[cur]; actions.setIdeaMeal(d.id, n === "any" ? null : n); }}>${cur === "any" ? "Any" : MEALS[cur].label}</button>`}
+    ${!ro && html`<button className=${"rm" + (arm ? " armed" : "")} aria-label=${arm ? `Confirm: remove ${d.name} and its recipe` : "Remove " + d.name} title=${arm ? "" : "Remove"} onClick=${remove}>${arm ? "Remove?" : html`<${I.x} size=${13}/>`}</button>`}
+  </li>`;
+}
+
 function IdeasPanel({ ctx }) {
   const { dishes, actions, ro, cfg } = ctx;
   const [v, setV] = useState("");
   const tags = lunchOn(cfg);
   const sorted = [...dishes].sort((a, b) => a.name.localeCompare(b.name));
+  const withRecipe = dishes.filter(hasRecipe).length;
   const add = async () => { const items = parseIdeas(v); if (items.length && (await actions.addDishes(items))) setV(""); };
   const onPaste = e => {
     const t = (e.clipboardData && e.clipboardData.getData("text")) || "";
     if (/\n/.test(t.trim())) { e.preventDefault(); actions.addDishes(parseIdeas(t)); }
   };
-  const tagBtn = d => {
-    const cur = d.meal === "lunch" || d.meal === "dinner" ? d.meal : "any";
-    return html`<button className="mtag" disabled=${ro} title="Change which meal this is suggested for" aria-label=${`${d.name}: suggested for ${cur === "any" ? "any meal" : cur}. Change`}
-      onClick=${() => { const n = NEXT_TAG[cur]; actions.setIdeaMeal(d.id, n === "any" ? null : n); }}>${cur === "any" ? "Any" : MEALS[cur].label}</button>`;
-  };
   return html`<section className="card panel" aria-label="Meal ideas">
-    <div className="card-h"><h3>Meal ideas</h3><span className="muted small">${dishes.length} saved. They show up as suggestions while you type, and the dice picks from them.${tags ? " Tap a tag to choose lunch, dinner or any meal." : ""}</span></div>
+    <div className="card-h"><h3>Meal ideas</h3><span className="muted small">${dishes.length} saved${withRecipe ? `, ${withRecipe} with a recipe` : ""}. They show up as suggestions while you type, and the dice picks from them. Tap an idea to see its recipe${ro ? "" : " or add one"}.${tags ? " Tap a tag to choose lunch, dinner or any meal." : ""}</span></div>
     <form className="row" onSubmit=${e => { e.preventDefault(); add(); }}>
       <input id="idea-new" className="grow" value=${v} onChange=${e => setV(e.target.value)} onPaste=${onPaste} placeholder="Add an idea, or paste a whole list" disabled=${ro} autoComplete="off"/>
       <button className="btn primary" disabled=${ro || !v.trim()}>Add</button>
     </form>
     ${sorted.length
-      ? html`<ul className="chips">${sorted.map(d => html`<li key=${d.id} className="chip"><span>${d.name}</span>${tags && tagBtn(d)}${!ro && html`<button className="rm" aria-label=${"Remove " + d.name} title="Remove" onClick=${() => actions.deleteDish(d.id)}><${I.x} size=${13}/></button>`}</li>`)}</ul>`
+      ? html`<ul className="chips">${sorted.map(d => html`<${IdeaChip} key=${d.id} d=${d} ctx=${ctx} tags=${tags}/>`)}</ul>`
       : html`<p className="hint">No ideas yet. Add the meals you make often. You can paste a list with one per line${tags ? ", and start a line with “Lunch:” to mark it as a lunch idea" : ""}.</p>`}
   </section>`;
+}
+
+/* Recipes are plain text: "- " lines become a list, "1." lines numbered steps, a short line ending in ":" a heading, and "Tip: …" a labelled line. */
+function parseRecipe(text) {
+  const blocks = []; let list = null;
+  for (const raw of (text || "").split(/\r?\n/)) {
+    const line = raw.trim(); let m;
+    if (!line) { list = null; continue; }
+    if ((m = line.match(/^[-*•·]\s+(.+)$/))) { if (!list || list.type !== "ul") blocks.push((list = { type: "ul", items: [] })); list.items.push(m[1]); continue; }
+    if ((m = line.match(/^(\d{1,2})[.)]\s+(.+)$/))) { if (!list || list.type !== "ol") blocks.push((list = { type: "ol", start: +m[1], items: [] })); list.items.push(m[2]); continue; }
+    list = null;
+    if (line.length <= 40 && /:$/.test(line)) blocks.push({ type: "h", text: line.slice(0, -1) });
+    else blocks.push({ type: "p", text: line });
+  }
+  return blocks;
+}
+function Labelled({ t }) {
+  const m = t.match(/^([A-Z][A-Za-z ]{1,18}):\s+(.+)$/);
+  return m ? html`<b>${m[1]}:</b> ${m[2]}` : t;
+}
+function RecipeText({ text }) {
+  return html`<div className="recipe">${parseRecipe(text).map((b, i) => b.type === "h" ? html`<h4 key=${i}>${b.text}</h4>`
+    : b.type === "p" ? html`<p key=${i}><${Labelled} t=${b.text}/></p>`
+    : b.type === "ul" ? html`<ul key=${i}>${b.items.map((t, j) => html`<li key=${j}><${Labelled} t=${t}/></li>`)}</ul>`
+    : html`<ol key=${i} start=${b.start}>${b.items.map((t, j) => html`<li key=${j}><${Labelled} t=${t}/></li>`)}</ol>`)}</div>`;
+}
+
+function RecipeDialog({ ctx, id, edit, onClose }) {
+  const { dishes, actions, ro } = ctx;
+  const idea = dishes.find(d => d.id === id) || null;
+  const ref = useRef(null);
+  const [editing, setEditing] = useState(!!edit && !ro);
+  const [text, setText] = useState(() => (idea && idea.recipe) || "");
+  const [url, setUrl] = useState(() => (idea && idea.url) || "");
+  const [err, setErr] = useState("");
+  const [saving, setSaving] = useState(false);
+  const dirty = !!idea && editing && (text !== (idea.recipe || "") || url !== (idea.url || ""));
+  const st = useRef({}); st.current = { editing, dirty };
+  const close = () => { const d = ref.current; if (d && d.open && typeof d.close === "function") d.close(); else onClose(); };
+  useEffect(() => {
+    const d = ref.current; if (!d) return;
+    const onC = () => onClose();
+    // Escape leaves an untouched editor, but never throws away typed changes or closes the editor in one go.
+    const onCancel = e => { if (!st.current.editing) return; e.preventDefault(); if (!st.current.dirty) setEditing(false); };
+    d.addEventListener("close", onC); d.addEventListener("cancel", onCancel);
+    try { if (!d.open) d.showModal(); } catch (e) { d.setAttribute("open", ""); }
+    return () => { d.removeEventListener("close", onC); d.removeEventListener("cancel", onCancel); };
+  }, []);
+  useEffect(() => { if (editing && ref.current) { const ta = ref.current.querySelector("textarea"); if (ta) ta.focus(); } }, [editing]);
+  useEffect(() => { if (!idea) onClose(); }, [!idea]);
+  if (!idea) return null;
+  const link = idea.url ? safeUrl(idea.url) : "";
+  const meal = idea.meal === "lunch" || idea.meal === "dinner" ? MEALS[idea.meal].label : null;
+  const startEdit = () => { setText(idea.recipe || ""); setUrl(idea.url || ""); setErr(""); setEditing(true); };
+  const save = async () => {
+    const clean = safeUrl(url);
+    if (clean === null) { setErr("That link doesn’t look right. It should start with https://"); return; }
+    setErr(""); setSaving(true);
+    const ok = await actions.saveRecipe(idea.id, { recipe: text.replace(/^\s*\n|\s+$/g, ""), url: clean });
+    setSaving(false);
+    if (ok) { setUrl(clean); setEditing(false); } else setErr("Couldn’t save the recipe. Check your connection and try again.");
+  };
+  return html`<dialog ref=${ref} className="sheet" aria-labelledby="recipe-title" onClick=${e => { if (e.target === ref.current && !editing) close(); }}>
+    <div className="sheet-h">
+      <div className="sheet-t"><span className="eyebrow">${editing ? "Edit recipe" : "Recipe"}${meal ? " · " + meal : ""}</span><h2 id="recipe-title">${idea.name}</h2></div>
+      <button className="ibtn" onClick=${close} aria-label="Close" title="Close"><${I.x}/></button>
+    </div>
+    <div className="sheet-b">
+      ${editing
+        ? html`<div className="redit">
+            <label className="field" htmlFor="recipe-text"><span className="lab">Recipe</span>
+              <textarea id="recipe-text" rows="14" value=${text} onChange=${e => setText(e.target.value)}
+                placeholder=${"Serves 2 · 20 min\n\nIngredients:\n- 500 g chicken thighs\n- 2 garlic cloves\n\nMethod:\n1. Marinate the chicken.\n2. Cook 6 min per side."}></textarea></label>
+            <p className="hint" style=${{ marginTop: 0 }}>Start a line with “-” for an ingredient and “1.” for a step. A short line ending in “:” becomes a heading.</p>
+            <label className="field" htmlFor="recipe-url"><span className="lab">Link to the original (optional)</span>
+              <input id="recipe-url" inputMode="url" autoComplete="off" placeholder="https://…" value=${url} onChange=${e => setUrl(e.target.value)}/></label>
+            ${err && html`<p className="xerr" role="alert">${err}</p>`}
+          </div>`
+        : html`${link && html`<p style=${{ marginBottom: idea.recipe ? "14px" : 0 }}><a className="srclink" href=${link} target="_blank" rel="noopener noreferrer"><${I.ext} size=${16}/>Open the recipe on ${hostOf(link)}</a></p>`}
+            ${idea.recipe ? html`<${RecipeText} text=${idea.recipe}/>` : !link && html`<p className="muted">No recipe saved for this idea yet.</p>`}`}
+    </div>
+    <div className="sheet-f">
+      ${editing
+        ? html`<button className="btn primary" onClick=${save} disabled=${saving}>${saving ? "Saving…" : "Save recipe"}</button>
+            <button className="btn ghost" onClick=${() => { setEditing(false); setErr(""); }} disabled=${saving}>Cancel</button>`
+        : html`${!ro && html`<button className="btn" onClick=${startEdit}><${I.pencil} size=${16}/> ${hasRecipe(idea) ? "Edit" : "Add a recipe"}</button>`}
+            <button className="btn ghost" onClick=${close}>Close</button>`}
+    </div>
+  </dialog>`;
 }
 
 function MealsTab({ ctx }) {
@@ -1153,7 +1301,7 @@ function MealsTab({ ctx }) {
 
 /* ---------- home ---------- */
 function MealBlock({ ctx, meal }) {
-  const { pp, meals, today, dishes, ro, actions, cfg, showToast } = ctx;
+  const { pp, meals, today, dishes, ro, actions, cfg, showToast, ideaByKey, openRecipe } = ctx;
   const F = MEALS[meal]; const m = meals[today] || {};
   const dish = m[F.dish] || ""; const cook = m[F.cook] || "";
   const [flip, setFlip] = useState(false);
@@ -1166,6 +1314,7 @@ function MealBlock({ ctx, meal }) {
   };
   const canSuggest = dishes.some(x => ideaFits(x, meal));
   const onSurprise = () => { const d = suggestDish(dishes, meals, today, meal, dish); if (d) actions.saveMeal(today, { [F.dish]: d }); };
+  const idea = dish ? ideaByKey[keyOf(dish)] : null;
   const dishesBy = cfg.dishesRule !== false && (cook === "a" || cook === "b") ? other(cook) : null;
   return html`<div className="mblock">
     <div className="eyebrow mb-h"><${MealIcon} meal=${meal}/> ${F.label}</div>
@@ -1181,6 +1330,7 @@ function MealBlock({ ctx, meal }) {
       ${dishesBy && html`<span className="who minor"><${Avatar} p=${pp[dishesBy]} size=${20}/><span><b>${pp[dishesBy].name}</b> washes up</span></span>`}
     </div>
     <div className="tactions">
+      ${hasRecipe(idea) && html`<button className="btn sm" onClick=${() => openRecipe(idea.id)}><${I.book} size=${16}/> Recipe</button>`}
       ${!cook && html`<button className="btn sm" onClick=${onFlip} disabled=${ro || flip}><span className=${"coin" + (flip ? " flipping" : "")} style=${duoStyle(pp)}></span>${flip ? "Flipping…" : "Flip a coin"}</button>`}
       <button className="btn sm" onClick=${onSurprise} disabled=${ro || !canSuggest} title=${canSuggest ? "" : "Add meal ideas on the Meals tab first"}><${I.dice} size=${16}/> ${dish ? "Something else" : "Surprise me"}</button>
     </div>
@@ -1704,6 +1854,7 @@ function App() {
   const [month, setMonth] = useState(() => monthKey(new Date()));
   const [toast, setToast] = useState(null);
   const [busy, setBusy] = useState(null);
+  const [recipe, setRecipe] = useState(null);
   const toastTimer = useRef(null);
 
   const setTab = t => { setTabState(t); lsSet("tab", t); try { window.scrollTo({ top: 0 }); } catch (e) {} };
@@ -1926,6 +2077,7 @@ function App() {
     };
     A.setIdeaMeal = (id, meal) => guard(() => withRetry(() => db.doc("dishes/" + id).update({ meal })));
     A.deleteDish = id => guard(() => withRetry(() => db.doc("dishes/" + id).delete()));
+    A.saveRecipe = (id, patch) => guard(() => withRetry(() => db.doc("dishes/" + id).update(patch)));
 
     /* money */
     const cur = () => moneyCfg(S.current.cfg).currency || "";
@@ -1979,7 +2131,10 @@ function App() {
   const pp = people(cfg);
   const me = myId && pp.a.uid === myId ? "a" : myId && pp.b.uid === myId ? "b" : null;
   const choreMap = useMemo(() => Object.fromEntries(chores.map(c => [c.id, c])), [chores]);
-  const ctx = { db, cfg: cfg || DEFAULT_CFG, pp, me, myId, chores, choreMap, dishes, tasks, meals, expenses, moneyDocs, today, ro, actions, busy, month, setMonth, setTab, showToast };
+  const ideaByKey = useMemo(() => Object.fromEntries(dishes.map(d => [keyOf(d.name), d])), [dishes]);
+  const openRecipe = useCallback((id, edit) => setRecipe({ id, edit: !!edit }), []);
+  const closeRecipe = useCallback(() => setRecipe(null), []);
+  const ctx = { db, cfg: cfg || DEFAULT_CFG, pp, me, myId, chores, choreMap, dishes, ideaByKey, tasks, meals, expenses, moneyDocs, today, ro, actions, busy, month, setMonth, setTab, showToast, openRecipe };
 
   let body;
   if (db === undefined || (db && !cfgReady && !slow)) body = html`<${Loading} note="Loading your chores and meal plan…"/>`;
@@ -2000,6 +2155,7 @@ function App() {
     ${ro && cfg && html`<div className="banner">You can look, but not change things here. Ask the owner to invite you from the Share menu as an <b>Editor</b>.</div>`}
     ${slow && cfgReady && html`<div className="banner">Can’t reach your saved plan right now, so this may be out of date.</div>`}
     <main>${body}</main>
+    ${recipe && cfg && html`<${RecipeDialog} key=${recipe.id} ctx=${ctx} id=${recipe.id} edit=${recipe.edit} onClose=${closeRecipe}/>`}
     ${(busy || toast) && html`<div className=${"toast" + (!busy && toast && toast.kind === "err" ? " err" : "")} role="status" aria-live="polite">${busy || toast.text}</div>`}
   </div>`;
 }
